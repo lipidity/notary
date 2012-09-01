@@ -11,9 +11,12 @@ sha1(){ print -n -- ${"$(/usr/bin/sha1sum)"[1,40]} }
 zmodload -F zsh/files b:mkdir
 zmodload zsh/mapfile
 
-# TODO validate clients' data
-
+# TODO security
 clientSHA=$(</dev/stdin)
+if [[ ! $clientSHA =~ ^[[:alnum:]]{40}$ ]]; then
+  exit
+fi
+
 time=$(/bin/date -Iseconds -u)
 
 last_stamp=$mapfile[HEAD]
