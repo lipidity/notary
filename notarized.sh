@@ -2,7 +2,6 @@
 emulate -L zsh
 
 DB=$0:h
-
 cd $DB
 
 clearsign(){ print -l -- $* | /usr/bin/gpg2 --clearsign }
@@ -13,9 +12,10 @@ zmodload zsh/mapfile
 
 # TODO security
 clientSHA=$(</dev/stdin)
-if [[ ! $clientSHA =~ ^[[:alnum:]]{40}$ ]]; then
+if [[ ! $clientSHA =~ ^sha1=[[:alnum:]]{40}$ ]]; then
   exit
 fi
+clientSHA=${clientSHA[6,46]}
 
 time=$(/bin/date -Iseconds -u)
 
@@ -32,3 +32,5 @@ mkdir -p client/${clientSHA[1,2]}
 mapfile[client/${clientSHA[1,2]}/${clientSHA[3,40]}]+=${stampSHA}$'\n'
 
 mapfile[HEAD]=$stampSHA
+
+print -l 'Content-Type: text/plain' '' $stamp
