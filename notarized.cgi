@@ -4,7 +4,7 @@ emulate -L zsh
 DB=$0:h
 cd $DB
 
-clearsign(){ print -l -- $* | /usr/bin/gpg2 --clearsign }
+clearsign(){ print -l -- $* | /usr/bin/gpg2 --batch --homedir /home/http/gpg.insec --default-key 4A5A5597 --clearsign }
 sha1(){ print -n -- ${"$(/usr/bin/sha1sum)"[1,40]} }
 
 zmodload -F zsh/files b:mkdir
