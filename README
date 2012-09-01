@@ -1,0 +1,28 @@
+notarized : trusted timestamping
+
+Client doesn't need to send signature or public key; can send hash of signed file instead.
+
+Might be useful with `git commit` to prove when it was written (-S for who by)
+
+Simple client implementation for frequent stamping, eg. of sent/received emails
+
+Simple to accomplish things like:
+- database of receieved stamps somewhere on filesystem (eg. ~/.notarized)
+- message appended to each piece of data (eg. append your name to it; but then important to keep this info to verify)
+
+[Need simple description of trusted timestamping and that notarized is to be run by a time stamping authority (TSA).]
+
+# to search / verify given hash of client's data only
+./c/$clienthash
+$stamp
+$stamp2
+
+./t/$stamp
+date yyyymmddthhmmssZ
+data $clienthash
+parent $laststamp
+--BEGIN GPG signature--
+Signature:
+Prevents MTM; client can ensure that correct hash was received by server even over insecure channel (eg. plain http or telnet)
+Makes it harder to have fake stamps if hash function broken
+-- END GPG signature--
