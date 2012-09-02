@@ -2,7 +2,14 @@
 <title>Notary</title>
 <meta charset=utf-8>
 
-<form action=notarized.cgi method=post>
+<form action=notarize.cgi method=post>
+  <h3>Notarize</h3>
+  <label for=sha1>SHA1: </label><input type=text maxlength=40 name=sha1>
+  <input type=submit>
+</form>
+
+<form action=verify.cgi method=post>
+  <h3>Verify</h3>
   <label for=sha1>SHA1: </label><input type=text maxlength=40 name=sha1>
   <input type=submit>
 </form>
