@@ -5,6 +5,12 @@ Client doesn't need to send signature or public key; can send hash of signed fil
 Might be useful with `git commit` to prove when it was written (-S for who by)
 
 Simple client implementation for frequent stamping, eg. of sent/received emails
+POST /notary/notarize
+sha1=...
+
+Not necessary to keep returned timestamp. Can always get it back later with:
+POST /notary/verify
+sha1=...
 
 Simple to accomplish things like:
 - database of receieved stamps somewhere on filesystem (eg. ~/.notarized)
