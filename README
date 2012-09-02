@@ -1,34 +1,23 @@
-notarized : trusted timestamping
+notary : a simple trusted timestamping server
 
-Client doesn't need to send signature or public key; can send hash of signed file instead.
+[Forthcoming: descriptions of trusted timestamping, how notary works, installation instructions]
 
-Might be useful with `git commit` to prove when it was written (-S for who by)
+I am running a demonstration server at <http://lipidity.com/notary/>. It is for demonstration ONLY. Don't rely on it to remain available long-term. (I will set up a long-term, maintained server once this project matures if there is interest and funding)
 
-Simple client implementation for frequent stamping, eg. of sent/received emails
-POST /notary/notarize
-sha1=...
+Once the notary server is set up, send SHA1 hashes to timestamp by HTTP POST.
+For example, you can add a post-commit hook in your git repositories:
 
-Not necessary to keep returned timestamp. Can always get it back later with:
-POST /notary/verify
-sha1=...
+  curl -d sha1=$(git rev-parse HEAD) http://lipidity.com/notary/notarize.cgi
 
-Simple to accomplish things like:
-- database of receieved stamps somewhere on filesystem (eg. ~/.notarized)
-- message appended to each piece of data (eg. append your name to it; but then important to keep this info to verify)
+This creates a trusted timestamp of each commit to prove when it was created.
+(Reminder: the lipidity.com server is for demonstration only).
 
-[Need simple description of trusted timestamping and that notarized is to be run by a time stamping authority (TSA).]
+Each timestamp is signed, so anyone can verify its authenticity using GnuPG. The timestamps are also "chained", which makes it almost impossible for anyone, even the server admin, to forge timestamps.
 
-# to search / verify given hash of client's data only
-./c/$clienthash
-$stamp
-$stamp2
+Once created, timestamps can be accessed from the server by:
 
-./t/$stamp
-date yyyymmddthhmmssZ
-data $clienthash
-parent $laststamp
---BEGIN GPG signature--
-Signature:
-Prevents MTM; client can ensure that correct hash was received by server even over insecure channel (eg. plain http or telnet)
-Makes it harder to have fake stamps if hash function broken
--- END GPG signature--
+  curl -d sha1=<SHA1-of-data> http://lipidity.com/notary/verify.cgi
+
+This means that you don't have to store anything yourself; the SHA1 hash is all you need to confirm the time at which you submitted it for timestamping.
+
+Please get in touch if you want to help out with this project.
