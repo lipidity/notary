@@ -38,7 +38,7 @@ if [[ $1 == notarize ]]; then
 
   mapfile[HEAD]=$stampSHA
 
-  print -n -- $stamp
+  print -- $stamp
 elif [[ $1 == verify ]]; then
   # TODO verify based on timestamp hash
   for s in ${(f)mapfile[client/${clientSHA[1,2]}/${clientSHA[3,40]}]};
