@@ -3,8 +3,7 @@ emulate -L zsh
 
 TRAPZERR(){print error;exit 1}
 
-DB=/home/http
-cd $DB
+cd $0:h
 
 print -l 'Content-Type: text/plain' ''
 
